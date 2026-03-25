@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Spaces List</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card-container {
+            margin-top: 50px;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            color: #343a40;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            color: #007bff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card-body p {
+            margin: 10px 0;
+            font-size: 0.95rem;
+            color: #495057;
+        }
+
+        .btn-danger, .btn-primary {
+            font-size: 1rem;
+            border-radius: 5px;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .search-form {
+            margin-bottom: 30px;
+        }
+
+        .search-input, .search-btn {
+            border-radius: 50px;
+        }
+
+        .search-btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .no-result {
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+
+        .card-container .col-md-4 {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Fixed Wishlist Icon */
+.wishlist-icon {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background-color: #ff3366; /* Bright color for visibility */
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+    text-align: center;
+    z-index: 9999;
+    cursor: pointer;
+}
+
+.wishlist-icon:hover {
+    background-color: #ff4d80; /* Slightly darker color on hover */
+}
+
+.wishlist-icon i {
+    font-size: 36px;
+    line-height: 36px;
+}
+
+/* Optional: Add animation for visibility */
+.wishlist-icon {
+    animation: slide-up 0.3s ease-out;
+}
+
+@keyframes slide-up {
+    from {
+        bottom: -100px;
+    }
+    to {
+        bottom: 20px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container card-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="{% url 'user_home' %}" class="btn btn-secondary">Back to Home</a>
+        </div>
+        <a href="/wishlist/" class="wishlist-icon" title="Go to Wishlist">
+            <i class="fa fa-heart" style="font-size: 36px;"></i>
+        </a>
+        
+        <h2 class="text-center">Parking Spaces List</h2>
+
+        <!-- Search Form -->
+       <!-- Search Form -->
+<form action="{% url 'area_details' %}" method="POST" class="search-form">
+    {% csrf_token %}
+    <div class="input-group">
+        <input type="text" name="location" class="form-control search-input" placeholder="Enter District" required>
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary search-btn">Search</button>
+        </div>
+    </div>
+</form>
+
+
+        <div class="row">
+            {% for area in areas %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        {% if area.image %}
+                            <img src="{{ area.image.url }}" alt="Parking Image" class="card-img-top">
+                        {% else %}
+                            <img src="path/to/default_image.jpg" alt="Default Image" class="card-img-top">
+                        {% endif %}
+                        
+                        <div class="card-body">
+                            <h4 class="card-title">{{ area.space_name }}</h4>
+                            
+                            
+                            {% if area.qr_code %}
+                                <p>
+                                    <strong></strong> <img src="{{ area.qr_code.url }}" alt="QR Code" width="100">
+                                </p>
+                            {% else %}
+                                <p><strong></strong> Not available</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-footer text-center">
+                            
+                                <div class="area">
+                                    <!-- Like Button -->
+                                    <a href="{% url 'add_favourites' area.id %}" class="btn btn-block {% if area.is_liked %}btn-danger{% else %}btn-outline-danger{% endif %} like-btn">
+                                        <i class="fa {% if area.is_liked %}fa-heart{% else %}fa-heart-o{% endif %}"></i> 
+                                        Like
+                                    </a>
+                        
+                                    <!-- View Details Button -->
+                                    <a href="{% url 'view_details' area.id %}" class="btn btn-danger btn-block">View Details</a>
+                        
+                                    <!-- Your Feedback Button -->
+                                    <a href="{% url 'save_feedback' area.id %}" class="btn btn-primary btn-block mt-2">Your Feedback</a>
+                                </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center no-result">
+                    <p>No parking spaces available in this district.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const likeButtons = document.querySelectorAll('.like-btn');
+    
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const icon = this.querySelector('i');
+            const isLiked = icon.classList.contains('fa-heart');
+            const areaId = this.getAttribute('href').split('/')[2];  // Get the area ID from the href
+            
+            // Send AJAX request to add/remove favorite
+            fetch(`/add_favourites/${areaId}/`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',  // Indicate it's an AJAX request
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the heart icon based on the response
+                if (data.success) {
+                    if (isLiked) {
+                        icon.classList.remove('fa-heart');
+                        icon.classList.add('fa-heart-o');
+                    } else {
+                        icon.classList.remove('fa-heart-o');
+                        icon.classList.add('fa-heart');
+                    }
+                }
+            })
+            .catch(error => console.log('Error:', error));
+        });
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const likeButtons = document.querySelectorAll('.like-btn');
+    
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();  // Prevent default link behavior
+            const icon = this.querySelector('i');
+            const isLiked = icon.classList.contains('fa-heart');
+            const areaId = this.getAttribute('data-area-id');  // Get the area ID from the button's data attribute
+            
+            // Send AJAX request to add/remove the favorite
+            fetch(`/add_favourites/${areaId}/`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',  // Indicate it's an AJAX request
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle the icon and button styles based on whether it's liked or not
+                    if (isLiked) {
+                        icon.classList.remove('fa-heart');
+                        icon.classList.add('fa-heart-o');
+                        this.classList.remove('btn-danger');
+                        this.classList.add('btn-outline-danger');
+                    } else {
+                        icon.classList.remove('fa-heart-o');
+                        icon.classList.add('fa-heart');
+                        this.classList.remove('btn-outline-danger');
+                        this.classList.add('btn-danger');
+                    }
+                }
+            })
+            .catch(error => console.log('Error:', error));
+        });
+    });
+});
+
+
+   
+</script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

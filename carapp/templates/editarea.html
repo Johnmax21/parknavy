@@ -1,0 +1,143 @@
+{% extends 'admin_home.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Area</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <div class="container my-5">
+        <div class="text-center mb-4">
+            <h2 class="text-3xl font-semibold text-gray-700">Edit Area</h2>
+        </div>
+
+        <!-- Error Handling -->
+        {% if error %}
+        <div class="alert alert-danger mb-4">{{ error }}</div>
+        {% endif %}
+
+        <!-- Form for Editing Area -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <!-- Space Name -->
+                    <div class="form-group">
+                        <label for="space_name" class="font-semibold">Space Name:</label>
+                        <input type="text" class="form-control" id="space_name" name="space_name" value="{{ space_name }}" required>
+                    </div>
+
+                    <!-- Size -->
+                    <div class="form-group">
+                        <label for="size" class="font-semibold">Size (sq ft):</label>
+                        <input type="number" class="form-control" id="size" name="size" value="{{ size }}" required>
+                    </div>
+
+                     <!-- total_slot -->
+                     <div class="form-group">
+                        <label for="total_slot" class="font-semibold">Total Slot:</label>
+                        <input type="number" class="form-control" id="total_slot" name="total_slot" value="{{ total_slot }}" required>
+                    </div>
+
+
+                    <!-- Availability -->
+                    <div class="form-group">
+                        <label for="availability" class="font-semibold">Availability:</label>
+                        <select class="form-control" id="availability" name="availability" required>
+                            <option value="Available" {% if availability == 'Available' %}selected{% endif %}>Available</option>
+                            <option value="Not Available" {% if availability == 'Not Available' %}selected{% endif %}>Not Available</option>
+                        </select>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="form-group">
+                        <label for="price" class="font-semibold">Price (per hour):</label>
+                        <input type="number" class="form-control" id="price" name="price" value="{{ price }}" required>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="form-group">
+                        <label for="location" class="font-semibold">Location:</label>
+                        <input type="text" class="form-control" id="location" name="location" value="{{ location }}" required>
+                    </div>
+
+                    <!-- City (Place) -->
+                    <div class="form-group">
+                        <label for="place" class="font-semibold">City:</label>
+                        <input type="text" class="form-control" id="place" name="place" value="{{ place }}" required>
+                    </div>
+
+                    <!-- Space Type -->
+                    <div class="form-group">
+                        <label for="space_type" class="font-semibold">Space Type:</label>
+                        <input type="text" class="form-control" id="space_type" name="space_type" value="{{ space_type }}" required>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="form-group">
+                        <label for="feature" class="font-semibold">Features:</label>
+                        <input type="text" class="form-control" id="feature" name="feature" value="{{ feature }}" required>
+                    </div>
+
+                    <!-- Operating Hours -->
+                    <div class="form-group">
+                        <label for="operating_hours" class="font-semibold">Operating Hours:</label>
+                        <input type="text" class="form-control" id="operating_hours" name="operating_hours" value="{{ operating_hours }}" required>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="form-group">
+                        <label for="contact_information" class="font-semibold">Contact Information:</label>
+                        <input type="text" class="form-control" id="contact_information" name="contact_information" value="{{ contact_information }}" required>
+                    </div>
+
+                    <!-- Area Email -->
+                   
+                    <!-- Slot Quantity -->
+                    <div class="form-group">
+                        <label for="slot_quantity" class="font-semibold">Slot Quantity:</label>
+                        <input type="number" class="form-control" id="slot_quantity" name="slot_quantity" value="{{ slot_quantity }}" required>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="form-group">
+                        <label for="image" class="font-semibold">Upload Image:</label>
+                        <input type="file" class="form-control-file" id="image" name="image">
+                        {% if image %}
+                        <img src="{{ image.url }}" alt="Current Image" class="mt-2 max-w-xs">
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success px-6 py-3 font-semibold text-white bg-green-600 hover:bg-green-700 rounded">
+                        Update Area
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
+{% endblock %}

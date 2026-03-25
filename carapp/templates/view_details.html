@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ area.space_name }} - Parking Space Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px; /* Adjust the map size */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <a href="{% url 'area_details' %}" class="btn btn-secondary mb-3">Back to Parking Spaces List</a>
+        <button class="btn btn-info mb-3" id="toggleFeedback">View Feedback</button>
+
+        <!-- Feedback Section -->
+        <div id="feedbackSection" style="display: none;">
+            <h4>User Feedback</h4>
+            {% if feedback %}
+                <ul class="list-group mb-4">
+                    {% for fb in feedback %}
+                        <li class="list-group-item">
+                            <strong>{{ fb.user }}</strong>: {{ fb.feedback_text }} 
+                            <br><small class="text-muted">{{ fb.created_at }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-danger">No feedback available.</p>
+            {% endif %}
+        </div>
+        <h2 class="text-center">{{ area.space_name }}</h2>
+
+        <div class="card">
+            <img src="{{ area.image.url }}" alt="Parking Image" class="card-img-top">
+            <div class="card-body">
+                <h4 class="card-title">{{ area.space_name }}</h4>
+                <p><strong>Size:</strong> {{ area.size }} sq ft</p>
+                <p><strong>Total Slot Quantity:</strong> {{ area.total_slot }}</p>
+                <p><strong>Available Slot Quantity:</strong> {{ area.slot_quantity }}</p>
+                <p><strong>Price:</strong> ${{ area.price }} per hour</p>
+                <p><strong>Location:</strong> {{ area.location }}</p>
+                <p><strong>City:</strong> {{ area.place }}</p>
+                <p><strong>Space Type:</strong> {{ area.space_type }}</p>
+                <p><strong>Features:</strong> {{ area.feature }}</p>
+                <p><strong>Operating Hours:</strong> {{ area.operating_hours }}</p>
+                <p><strong>Contact:</strong> {{ area.contact_information }}</p>
+                
+                {% if area.qr_code %}
+                   <!---- <p><strong></strong> <img src="{{ area.qr_code.url }}" width="100"></p>-->
+                {% else %}
+                    <p><strong></strong> Not available</p>
+                {% endif %}
+
+                <a href="{% url 'addbook' area.id %}" class="btn btn-danger btn-block">Book Now</a>
+            </div>
+        </div>
+
+        <!-- OpenStreetMap -->
+        <div id="map"></div>
+
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Add Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        // Function to get latitude and longitude for the place using Nominatim API
+        function getCoordinates(city) {
+            return new Promise((resolve, reject) => {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${city}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.length > 0) {
+                            const lat = data[0].lat;
+                            const lon = data[0].lon;
+                            resolve({ lat, lon });
+                        } else {
+                            reject('Coordinates not found');
+                        }
+                    })
+                    .catch(error => reject(error));
+            });
+        }
+
+        // Initialize the map
+        var map = L.map('map').setView([0, 0], 13);  // Default view, will be updated after getting coordinates
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Get coordinates for the city and update map
+        getCoordinates('{{ area.place }}').then(({ lat, lon }) => {
+            // Update map view and add marker
+            map.setView([lat, lon], 13);  // Adjust zoom level as needed
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup("<b>{{ area.space_name }}</b><br>{{ area.place }}")
+                .openPopup();
+
+            // Add nearby POIs (petrol pumps, hotels, EV charging stations, malls) - Adjust based on actual coordinates
+            L.marker([lat + 0.01, lon]).addTo(map)
+                .bindPopup("<b>Petrol Pump</b><br>Nearby Petrol Pump");
+
+            L.marker([lat, lon + 0.01]).addTo(map)
+                .bindPopup("<b>Hotel</b><br>Nearby Hotel");
+
+            L.marker([lat - 0.01, lon]).addTo(map)
+                .bindPopup("<b>EV Charging</b><br>Nearby EV Charging Station");
+
+            L.marker([lat, lon - 0.01]).addTo(map)
+                .bindPopup("<b>Mall</b><br>Nearby Mall");
+        }).catch(error => {
+            console.error('Error fetching coordinates:', error);
+        });
+
+
+        document.getElementById("toggleFeedback").addEventListener("click", function() {
+            var feedbackSection = document.getElementById("feedbackSection");
+            if (feedbackSection.style.display === "none") {
+                feedbackSection.style.display = "block";
+                this.textContent = "Hide Feedback";
+            } else {
+                feedbackSection.style.display = "none";
+                this.textContent = "View Feedback";
+            }
+        });
+    </script>
+</body>
+</html>

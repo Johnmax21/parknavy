@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Location Map</title>
+    
+    <!-- Include Leaflet.js for map rendering -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <style>
+        #map {
+            height: 400px; /* Adjust the map size */
+        }
+
+        #loading {
+            display: none;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading message when location is being fetched -->
+    <div id="loading">Loading your location...</div>
+
+    <!-- The input box where the location name will appear -->
+    <input type="text" id="location" readonly placeholder="Your Location">
+
+    <!-- Div where the map will be displayed -->
+    <div id="map"></div>
+
+    <script>
+        // Function to fetch and display the user's current location
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                document.getElementById("loading").classList.remove("hidden"); // Show loading message
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+
+                        // Reverse geocoding to get the address of the current location
+                        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`;
+
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(data => {
+                                // Get the address from the reverse geocoding result
+                                let location = data.address.village || 
+                                              data.address.suburb || 
+                                              data.address.neighbourhood ||
+                                              data.address.town ||
+                                              data.address.city;
+                                if (data.address.state_district) {
+                                    location += `, ${data.address.state_district}`;
+                                } else if (data.address.district) {
+                                    location += `, ${data.address.district}`;
+                                }
+
+                                // Update the location input field with the place name
+                                document.getElementById("location").value = location;
+
+                                // Initialize the map with the user's coordinates
+                                const map = L.map('map').setView([latitude, longitude], 13);
+
+                                // Add OpenStreetMap tile layer
+                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                }).addTo(map);
+
+                                // Add a marker for the user's current location
+                                L.marker([latitude, longitude]).addTo(map)
+                                    .bindPopup("<b>Your Current Location</b><br>" + location)
+                                    .openPopup();
+                            })
+                            .catch(error => {
+                                alert("Error getting location name: " + error);
+                                document.getElementById("loading").classList.add("hidden"); // Hide loading message
+                            });
+                    },
+                    function(error) {
+                        alert("Error getting location: " + error.message);
+                        document.getElementById("loading").classList.add("hidden"); // Hide loading message
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Call the function to get current location
+        getCurrentLocation();
+    </script>
+
+</body>
+</html>

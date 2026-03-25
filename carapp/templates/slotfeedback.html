@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback and Rating Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .rating {
+            margin-bottom: 20px;
+        }
+        .rating input {
+            margin-right: 5px;
+        }
+        .rating label {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feedback Form</h1>
+        <!-- slot_feedback_form.html -->
+        <form method="post">
+            {% csrf_token %}
+            <h3>Feedback for: {{ slot.name }}</h3>  <!-- Assuming 'name' is the field of Add_areas model -->
+            
+            <label for="rating">Rating:</label>
+            <select name="rating" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            
+            <label for="feedback_text">Feedback:</label>
+            <textarea name="feedback_text" required></textarea>
+            
+            <button type="submit">Submit Feedback</button>
+            <button type="button" class="btn btn-dark btn-sm mt-3">
+                <a href="/area_details/" class="btn btn-dark btn-sm mt-3">Back To Parking Spaces List</a>
+            </button>
+
+        </form>
+        
+
+    </div>
+    <script>
+    fetch('/your-slotfeedback-url/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken // make sure you're passing the CSRF token
+        },
+        body: JSON.stringify({
+            rating: rating,
+            feedback_text: feedbackText
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message); // Show success message to the user
+        } else {
+            alert(data.message); // Show error message
+        }
+    })
+    .catch(error => console.error('Error:', error));
+</script>
+    
+</body>
+</html>

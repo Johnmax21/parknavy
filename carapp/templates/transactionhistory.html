@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Transaction History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .no-data {
+            text-align: center;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Transaction History</h1>
+    
+        {% if user %}
+        <h2>User Transactions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Space Name</th>
+                    <th>Price</th>
+                    <th>Slot</th>
+                    <th>Extra Payment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in user %}
+                <tr>
+                    <td>{{ transaction.name }}</td>
+                    <td>{{ transaction.email }}</td>
+                    <td>{{ transaction.phone }}</td>
+                    <td>{{ transaction.space_name }}</td>
+                    <td>{{ transaction.price }}</td>
+                    <td>{{ transaction.slot }}</td>
+                   
+                    <!-- Add Button to Pass the Transaction ID -->
+                    <td>
+                        <!-- Using a Button as a Link -->
+                        <a href="{% url 'extrapay' transaction.id %}" class="btn btn-info">Extra Payment</a>
+                    </td>
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-data">You have no user transactions yet.</p>
+        {% endif %}
+        
+        {% if recurring %}
+        <h2>Recurring Transactions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Area</th>
+                    <th>Amount</th>
+                    <th>Quantity</th>
+                    <th>Transaction ID</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in recurring %}
+                <tr>
+                    <td>{{ transaction.products.space_name }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.quantity }}</td>
+                    <td>{{ transaction.order_id }}</td>
+                    <td>{{ transaction.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-data">You have no recurring transactions yet.</p>
+        {% endif %}
+    </div>
+    
+
+</body>
+</html>

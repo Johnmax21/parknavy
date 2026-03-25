@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Space Listings</title>
+    <link rel="stylesheet" href="css/styles.css">  <!-- Optional: Link to CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 30px;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Spacing between cards */
+            justify-content: center; /* Center align cards */
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: 300px; /* Fixed width for each card */
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .card-content {
+            margin-top: 10px;
+        }
+
+        .card-content p {
+            margin: 5px 0; /* Spacing between paragraphs */
+            color: #495057;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block; /* Center the button */
+            text-align: center;
+            width: 100%; /* Full width button */
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        .pay-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block; /* Center the button */
+            text-align: center;
+            width: 100%; /* Full width button */
+        }
+
+        .pay-btn:hover {
+            background-color: #218838;
+        }
+
+        .back-btn {
+            background-color: #007bff; /* Primary color */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            margin-bottom: 20px; /* Spacing below the button */
+            display: inline-block; /* To avoid full-width */
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .card-container {
+                flex-direction: column; /* Stack cards on small screens */
+                align-items: center; /* Center align cards */
+            }
+
+            .card {
+                width: 90%; /* Make cards full width on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'user_home' %}" class="back-btn">Back to Home</a> <!-- Button to go back to home -->
+    <h1>My Bookings</h1>
+    <div class="card-container">
+        {% for book in books %}
+            <div class="card">
+                <div class="card-header">{{ book.space_name }}</div>
+                <div class="card-content">
+                    <p><strong>Size:</strong> {{ book.size }}</p>
+                    <p><strong>Slot Quantity:</strong> {{ book.slot_quantity }}</p>
+                    <p><strong>Availability:</strong> {{ book.availability }}</p>
+                    <p><strong>Price:</strong> {{ book.price }}</p>
+                    <p><strong>District:</strong> {{ book.location }}</p>
+                    <p><strong>City:</strong> {{ book.place }}</p>
+                    <p><strong>Space Type:</strong> {{ book.space_type }}</p>
+                    <p><strong>Features:</strong> {{ book.feature }}</p>
+                    <p><strong>Operating Hours:</strong> {{ book.operating_hours }}</p>
+                    <p><strong>Contact Information:</strong> {{ book.contact_information }}</p>
+                    <p><strong>Phone:</strong> {{ book.phone }}</p>
+                    <p><strong>Car Name:</strong> {{ book.carname }}</p>
+                    <p><strong>Brand Name:</strong> {{ book.brandname }}</p>
+                    <p><strong>Date:</strong> {{ book.date }}</p>
+                    <p><strong>Spending Time:</strong> {{ book.time }}</p>
+                    <p><strong>Slot:</strong> {{ book.slot }}</p>
+                    <p><strong>Name:</strong> {{ book.name }}</p>
+                    <p><strong>Car Number:</strong> {{ book.carnumber }}</p>
+                    <p><strong>Email:</strong> {{ book.email }}</p>
+                    
+                    <p><strong>ID Proof:</strong></p>
+                    {% if book.idproof %}
+                        <img src="{{ book.idproof.url }}" alt="ID Proof">
+                    {% else %}
+                        <p>No ID Proof</p>
+                    {% endif %}
+                    <!-- Payment Button -->
+                    <form action="{% url 'payment'  %}" method="POST" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="pay-btn">Pay Now</button>
+                    </form> 
+
+                    <!-- Delete Button -->
+                    <form action="{% url 'delete_booking' book.id %}" method="POST" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                    
+                </div>
+            </div>
+        {% empty %}
+            <div class="card" style="text-align: center;">
+                <p>No bookings available.</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,62 @@
+{% extends 'admin_home.html' %}
+{% block content %}
+
+<style>
+    .feedback-table {
+        width: 100%;
+        max-width: 1000px; /* Adjust width as needed */
+        margin: 20px auto;
+        border-collapse: collapse;
+        font-size: 16px;
+        text-align: left;
+    }
+    
+    .feedback-table th, .feedback-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+    }
+    
+    .feedback-table th {
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    
+    .feedback-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    
+    .feedback-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+    
+    .feedback-table a {
+        color: #ff4d4d;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    
+    .feedback-table a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<table class="feedback-table">
+    <thead>
+        <tr>
+            <th>Feedback</th>
+            <th>Rating</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in feed %}
+        <tr>
+            <td>{{ i.feedback_text }}</td>
+            <td>{{ i.rating }}</td>
+            <td><a href="/delete_feedback/{{ i.id }}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

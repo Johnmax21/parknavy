@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to Cart</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .product-image {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        .product-details {
+            margin-bottom: 20px;
+        }
+        .add-to-cart-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 300px;
+        }
+        .quantity-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+        .total-price {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+
+        .back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+    
+        .back-arrow {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+    
+        .back-arrow:hover {
+            color: #007BFF;
+        }
+    
+        .arrow-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            border-left: 2px solid #333;
+            border-bottom: 2px solid #333;
+            transform: rotate(45deg);
+            transition: border-color 0.3s;
+        }
+    
+        .back-arrow:hover .arrow-icon {
+            border-color: #007BFF;
+        }.back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+    
+        .back-arrow {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+    
+        .back-arrow:hover {
+            color: #007BFF;
+        }
+    
+        .arrow-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            border-left: 2px solid #333;
+            border-bottom: 2px solid #333;
+            transform: rotate(45deg);
+            transition: border-color 0.3s;
+        }
+    
+        .back-arrow:hover .arrow-icon {
+            border-color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back">
+            <a href="/car/" class="back-arrow">
+                <span class="arrow-icon"></span>
+                Back
+            </a>
+            </div>
+        <div class="product-card">
+            <img src="{{ prd.image.url }}" alt="{{ prd.name }}" class="product-image">
+            
+            <div class="product-details">
+                <h2>{{ prd.name }}</h2>
+              <p>recurring slots:{{ prd.recurringquantity }}</p>
+                <p>Rent per day: Rs{{ prd.rentperday }}</p>
+            </div>
+
+            <form method="POST" class="add-to-cart-form">
+                {% csrf_token %}
+                <div>
+                    <label name="start" for="start-date">Rental start date:</label>
+                    <input type="date" id="start-date" name="start" required onchange="calculateTotal()">
+                    <br><br>
+                    <label name="end" for="end-date">Rental end date:</label>
+                    <input type="date" id="end-date" name="end" required onchange="calculateTotal()">
+                    <br><br>
+                </div>
+                <label for="quantity" hidden>Quantity (days):</label>
+                <input 
+                    type="number" 
+                    id="quantity" 
+                    name="quantity" 
+                    min="1" 
+                    max="10" 
+                    value="1" 
+                    class="quantity-input"
+                    required onchange="calculateTotal()"
+                    hidden
+                >
+            </div>
+
+            <!-- Hidden field for total amount -->
+            <input type="hidden" id="total-hidden" name="total">
+
+
+
+                <div class="total-price">
+                    <input type="number" id="total-amount" name="total" readonly>
+                    <p id="total-display">Total: Rs0</p> <!-- Display the total in a readable format -->
+                    <p id="date-error" class="error-message"></p> <!-- Error message container -->
+                </div>
+
+                <button type="submit" class="submit-button">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            const startDateInput = document.getElementById("start-date");
+            const endDateInput = document.getElementById("end-date");
+            const rentPerDay = {{ prd.rentperday }}; // This is dynamically filled from Django
+            
+            // Convert the dynamic Django dates into JavaScript Date objects (YYYY-MM-DD format)
+            const fromDate = new Date("{{ prd.fromdate }}");
+            const toDate = new Date("{{ prd.todate }}");
+            
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+            const errorMessage = document.getElementById("date-error");
+
+            // Date validation: Ensure start date is not before the product's from date
+            if (startDate < fromDate) {
+                errorMessage.textContent = `Start date cannot be earlier than ${fromDate.toLocaleDateString()}. Please choose a later date.`;
+                startDateInput.setCustomValidity("Invalid start date.");
+                return;
+            } else {
+                startDateInput.setCustomValidity(""); // Clear error if valid
+            }
+
+            // Date validation: Ensure end date is not after the product's to date
+            if (endDate > toDate) {
+                errorMessage.textContent = `End date cannot be later than ${toDate.toLocaleDateString()}. Please choose an earlier date.`;
+                endDateInput.setCustomValidity("Invalid end date.");
+                return;
+            } else {
+                endDateInput.setCustomValidity(""); // Clear error if valid
+            }
+
+            // Date range validation: Ensure the start date is not after the end date
+            if (endDate < startDate) {
+                errorMessage.textContent = "End date cannot be earlier than the start date. Please choose a valid range.";
+                return;
+            }
+
+            // Clear error message if dates are valid
+            errorMessage.textContent = "";
+
+            // Calculate the difference in days between start and end dates
+            const timeDiff = endDate - startDate;
+            const daysDiff = timeDiff / (1000 * 3600 * 24); // Convert time difference to days
+
+            if (daysDiff >= 0) {
+                const totalPrice = daysDiff * rentPerDay;
+                const quantity = 1; // You can include quantity if needed
+                const totalAmount = totalPrice * quantity;
+                
+                // Update the total amount in the input field for the backend
+                document.getElementById("total-amount").value = totalAmount.toFixed(2);
+                
+                // Update the total amount for display
+                document.getElementById("total-display").innerText = `Total: $${totalAmount.toFixed(2)}`;
+            } else {
+                document.getElementById("total-amount").value = "0";
+                document.getElementById("total-display").innerText = "Total: $0 (Invalid date range)";
+            }
+        }
+    </script>
+</body>
+</html>

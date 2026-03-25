@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Choose Your Ride</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      color: #1a365d;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    .ride-box {
+      width: 100%;
+      max-width: 480px;
+      height: 260px;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      transition: all 0.28s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ride-box:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    .ride-box:active {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .ride-header {
+      height: 140px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .solo .ride-header {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+    }
+
+    .shared .ride-header {
+      background: linear-gradient(135deg, #ed64a6, #d53f8c);
+    }
+
+    .ride-content {
+      padding: 28px 32px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .ride-content h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      color: #2d3748;
+    }
+
+    .ride-content p {
+      color: #718096;
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Choose Your Ride Type</h1>
+
+  <div class="container">
+    
+    <a href="/solo/" class="ride-box solo">
+      <div class="ride-header">Solo Ride</div>
+      <div class="ride-content">
+        <h2>Private Ride</h2>
+        <p>Travel alone in comfort and privacy.<br>Fastest route • Full vehicle control • No sharing</p>
+      </div>
+    </a>
+
+    <a href="shared-ride.html" class="ride-box shared">
+      <div class="ride-header">Shared Ride</div>
+      <div class="ride-content">
+        <h2>Pool / Share</h2>
+        <p>Save money by sharing your ride.<br>Meet new people • Lower fare • Eco-friendly</p>
+      </div>
+    </a>
+
+  </div>
+
+</body>
+</html>

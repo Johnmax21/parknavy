@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extrapay Details</title>
+</head>
+<body>
+    <h2>Enter Extra Payment Details for Transaction {{ transaction.id }}</h2>
+
+    <!-- POST Method Form -->
+    <form method="POST">
+        {% csrf_token %}
+        
+       
+        <div>
+            <label for="time">Time (in hours):</label>
+            <input type="number" name="time" id="time" required>
+        </div>
+
+        <button type="submit">Save Extra Payment</button>
+    </form>
+
+    <div>
+        <a href="/transhistory/'">Back to Transaction Details</a>
+    </div>
+
+</body>
+</html>

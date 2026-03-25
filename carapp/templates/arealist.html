@@ -1,0 +1,91 @@
+{% extends 'admin_home.html' %}
+{% block content %}
+
+<style>
+    .styled-table {
+        width: 900px; /* Set table width to 1000px */
+        margin: 0px auto; /* Center the table horizontally and add margin */
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+    
+    .styled-table th, .styled-table td {
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+    }
+    
+    .styled-table th {
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    
+    .styled-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+    
+    .styled-table img {
+        border-radius: 5px;
+    }
+    
+    .styled-table a {
+        color: #ff4d4d;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    
+    .styled-table a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Space_name</th>
+            <th>Size</th>
+            <th>Total Slot</th>
+            <th>Availability</th>
+            <th>Price</th>
+            <th>Location</th>
+            <th>Space_type</th>
+            <th>Feature</th>
+            <th>Operating_hours</th>
+            <th>Contact_information</th>
+         
+            <th>Slot_quantity</th>
+            <th>place</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in areas %}
+        <tr>
+            <td><img src="/media/{{ i.image }}" height="50" width="50" alt="User Image"></td>
+            <td>{{ i.space_name }}</td>
+            <td>{{ i.size }}</td>
+            <td>{{ i.total_slot }}</td>
+            <td>{{ i.availability }}</td>
+            <td>{{ i.price }}</td>
+            <td>{{ i.location }}</td>
+            <td>{{ i.space_type }}</td>
+            <td>{{ i.feature }}</td>
+            <td>{{ i.operating_hours }}</td>
+            <td>{{ i.contact_information }}</td>
+           
+            <td>{{ i.slot_quantity }}</td>
+            <td>{{ i.place }}</td>
+            <td><a href="/delete_area/{{ i.id }}">Delete</a></td>
+            <td><a href="/editarea/{{ i.id }}">Edit</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Image Page</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Rufina:400,700" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #332121;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures the body takes at least 100vh height */
+            overflow-x: hidden;
+            
+            /* Background image */
+            background-image: url('https://wallpapers.com/images/hd/4k-mercedes-in-parking-lot-4h39kqfz8giaj8pn.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Container for text */
+        .text-container {
+            position: absolute;  /* Position it on top of the background image */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust for perfect centering */
+            text-align: center;
+            z-index: 2;  /* Make sure it stays on top */
+        }
+
+        h1 {
+            font-family: 'Rufina', serif;
+            font-size: 2em;
+            color: hsl(340, 27%, 96%);
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .welcome {
+            font-family: 'Rufina', serif;
+            font-size: 3em;
+            color: hsl(340, 27%, 96%);
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        p {
+            font-size: 1.4em;
+            color: white;
+            font-weight: 300;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Button Styling */
+        .button {
+            background-color: #f44336;
+            color: white;
+            text-decoration: none;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 30px;
+            box-shadow: 0px 10px 20px rgba(244, 67, 54, 0.5);
+        }
+
+        .button:hover {
+            background-color: #d32f2f;
+            transform: translateY(-5px);  /* Slight upward movement on hover */
+        }
+
+        /* Navbar Styling */
+        /* Navbar Styling */
+/* Navbar Styling */
+nav {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px 30px;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center; /* Center navbar links */
+    align-items: center;
+}
+
+/* Adjust heading position to the top-left corner */
+/* Adjust heading position to the top-left corner */
+nav h1 {
+    position: absolute; /* Position the heading absolutely */
+    top: 10px; /* Space from the top */
+    left: 20px; /* Space from the left */
+    font-family: 'Rufina', serif;
+    color: #fff;
+    font-size: 3.5em; /* Increase the font size */
+    font-weight: bold;
+}
+
+/* Navbar links styling */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1; /* Ensures navbar links take up the remaining space */
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 25px;
+    font-size: 1.2em;
+}
+
+.navbar a:hover {
+    color: #f44336;
+}
+
+
+        /* Footer Styling */
+        footer {
+            width: 100%;
+            background-color: #222;
+            color: #fff;
+            text-align: left;
+            padding: 5px 0;  /* Reduced padding for a smaller footer */
+            font-size: 0.8em; /* Smaller font size */
+            position: relative; /* Ensures it's not sticky */
+            margin-top: auto; /* Pushes footer down if content is short */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            p {
+                font-size: 1.2em;
+            }
+
+            .button {
+                font-size: 1.2em;
+                padding: 12px 24px;
+            }
+
+            /* Adjust Navbar link spacing for smaller screens */
+            .navbar a {
+                margin: 0 10px;  /* Reduced margin for mobile view */
+            }
+
+            /* Adjust Container max-width for smaller screens */
+            .container {
+                max-width: 90%; /* Smaller max-width for mobile view */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <nav class="navbar">
+        <h1><b>PARKNAVI</b></h1>
+        <a href="#home">Home</a>
+        <a href="/register_user/">User Register</a>
+        <a href="/login/">Login</a>
+        <a href="/admin_login/">Admin Login</a>
+        <a href="/about/">About</a>
+    </nav>
+
+    <!-- Text Section Above the Background Image -->
+    <div class="text-container">
+        <div class="welcome">Welcome to PARKNAVI</div>
+        <p>Explore the best parking options for your car today!</p>
+        <a href="/register_user/" class="button">Explore Now</a>
+    </div>
+
+    <!-- Content Section -->
+    <!-- You can add content here -->
+
+    <!-- Footer Section -->
+    <!-- <footer>
+        <p>&copy; 2025 Car Image Page. All Rights Reserved.</p>
+    </footer> -->
+</body>
+</html>

@@ -1,0 +1,51 @@
+{% extends 'admin_home.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Bookings</title>
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-4">User Bookings</h1>
+
+        <!-- Table -->
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+            <thead>
+                <tr class="bg-blue-600 text-white">
+                    <th class="py-3 px-6 text-left">Price</th>
+                    <th class="py-3 px-6 text-left">Phone</th>
+                    <th class="py-3 px-6 text-left">Space Name</th>
+                    <th class="py-3 px-6 text-left">Name</th>
+                    <th class="py-3 px-6 text-left">Email</th>
+                    <th class="py-3 px-6 text-left">Slot</th>
+                    <th class="py-3 px-6 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in booklist %}
+                <tr class="border-b">
+                    <td class="py-4 px-6">{{ booking.price }}</td>
+                    <td class="py-4 px-6">{{ booking.phone }}</td>
+                    <td class="py-4 px-6">{{ booking.space_name }}</td>
+                    <td class="py-4 px-6">{{ booking.name }}</td>
+                    <td class="py-4 px-6">{{ booking.email }}</td>
+                    <td class="py-4 px-6">{{ booking.slot }}</td>
+                    <td class="py-4 px-6">
+                        <a href="/add_cart/{{ booking.id }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Book</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
+
+{% endblock %}

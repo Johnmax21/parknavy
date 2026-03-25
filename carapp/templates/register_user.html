@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Font for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: url("{% static 'asset/img/register.jpg' %}") no-repeat center center;
+            background-size: cover;
+
+            font-family: 'Poppins', sans-serif; /* Use Poppins font for modern look */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #ffffff; /* White background for form */
+            max-width: 500px; /* Set max width for form */
+            margin: 50px auto; /* Center the form vertically and horizontally */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+        }
+
+        h1 {
+            font-weight: 600;
+            color: #5D0F2D;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .form-control:focus {
+            border-color: #5D0F2D; /* Focus effect with pink color */
+            box-shadow: 0 0 5px rgba(93, 15, 45, 0.2); /* Soft shadow on focus */
+        }
+
+        .btn-primary {
+            background-color: #5D0F2D; /* Pink button color */
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #9C2541; /* Darker pink on hover */
+        }
+
+        .form-control-file {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .alert {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>User Registration</h1>
+        <form method="post" enctype="multipart/form-data" action="{% url 'register_user' %}" id="registerForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" class="form-control" pattern="[A-Za-z\s]+" title="First name should only contain letters and spaces" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" class="form-control" pattern="[A-Za-z\s]+" title="Last name should only contain letters and spaces" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" class="form-control" pattern="\d{10}" title="Please enter a valid 10-digit phone number (digits only)" maxlength="10" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Profile Image:</label>
+                <input type="file" id="image" name="image" class="form-control-file">
+            </div>
+            <div class="alert" id="passwordError">
+                Passwords do not match. Please check and try again.
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
+    </div>
+
+    <script>
+        // Add event listener to the form
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            // Get the password and confirm password field values
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirm_password').value;
+
+            // Check if the passwords match
+            if (password !== confirmPassword) {
+                // Prevent form submission
+                event.preventDefault();
+                
+                // Show an alert message
+                document.getElementById('passwordError').style.display = 'block';
+            }
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Wishlist</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+
+<body>
+
+    <div class="container">
+        <h2 class="text-center my-4">Your Wishlist</h2>
+        <a href="{% url 'area_details' %}" class="btn btn-secondary mb-3">Back to Parking Spaces List</a>
+
+        {% if areas %}
+            <div class="row">
+                {% for favourite in areas %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{{ favourite.area.image.url }}" alt="Parking Space Image" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h4 class="card-title">{{ favourite.area.space_name }}</h4>
+                                <p><strong>Size:</strong> {{ favourite.area.size }} sq ft</p>
+                                <p><strong>Availability:</strong> {{ favourite.area.availability }}</p>
+                                <p><strong>Price:</strong> ${{ favourite.area.price }} per hour</p>
+                                <p><strong>Location:</strong> {{ favourite.area.location }}</p>
+                                <p><strong>Slot Quantity:</strong> {{ favourite.area.slot_quantity }}</p>
+                                <p><strong>Space Type:</strong> {{ favourite.area.space_type }}</p>
+                                <p><strong>Operating Hours:</strong> {{ favourite.area.operating_hours }}</p>
+                                <a href='/remove_wishlist/{{ favourite.id }}/'>Remove</a>
+                               
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Your wishlist is empty. Start adding your favorite parking spaces!</p>
+        {% endif %}
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

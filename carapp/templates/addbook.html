@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Parking Space</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-custom {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #218838;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-container">
+                    <h2>Reserve Now</h2>
+                    <form method="POST" enctype="multipart/form-data" action="/add_book/">
+                        {% csrf_token %}
+                        
+                        {% comment %} <p class="cart-text" name="area_id"><b>Area_id:</b>{{a}}</p> {% endcomment %}
+                        <p class="cart-text"><b>Area Name:</b>{{k}}</p>
+                        <p class="cart-text"><b>Size:</b>{{b}}</p>
+                        <p class="cart-text"><b>Slot Quantity:</b>{{j}}</p>
+                        <p class="cart-text"><b>Availability:</b>{{c}}</p>
+                        <p class="cart-text"><b>Price:</b>{{d}}</p>
+                        <p class="cart-text"><b>District:</b>{{e}}</p>
+                        <p class="cart-text"><b>City:</b>{{z}}</p>
+                        <p class="cart-text"><b>Space_type:</b>{{f}}</p>
+                        <p class="cart-text"><b>Feature:</b>{{g}}</p>
+                        <p class="cart-text"><b>Operating_hours:</b>{{h}}</p>
+                        <p class="cart-text"><b>Contact_information:</b>{{i}}</p>
+                        {% comment %} <p class="cart-text"><b>Image:</b>{{j}}</p> {% endcomment %}
+                        {% comment %} <p class="cart-text"><b>Email:</b>{{l.url}}</p> {% endcomment %}
+
+                        <input type="hidden" name="space_name" value="{{k}}">
+                        <input type="hidden" name="size" value="{{b}}">
+                        <input type="hidden" name="slot_quantity" value="{{j}}">
+                        <input type="hidden" name="availability" value="{{c}}">
+                        <input type="hidden" name="price" value="{{d}}">
+                        <input type="hidden" name="location" value="{{e}}">
+                        <input type="hidden" name="place" value="{{z}}">
+                        <input type="hidden" name="space_type" value="{{f}}">
+                        <input type="hidden" name="feature" value="{{g}}">
+                        <input type="hidden" name="operating_hours" value="{{h}}">
+                        <input type="hidden" type="tel" name="contact_information" value="{{i}}">
+                        <input type="hidden" name="image" value="{{j}}">
+                        {% comment %} <input type="hidden" name="area_email" value="{{l}}"> {% endcomment %}
+
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" name="name" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="carname">Car Name:</label>
+                            <input type="text" class="form-control" name="carname" id="carname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="brandname">Brand Name:</label>
+                            <input type="text" class="form-control" name="brandname" id="brandname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="carnumber">Car Number:</label>
+                            <input type="text" class="form-control" name="carnumber" id="carnumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="slot">How Many Slot You Want?:</label>
+                            <input type="text" class="form-control" name="slot" id="slot" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Booking Date:</label>
+                            <input type="date" id="date" name="date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="time">Spending Hours:</label>
+                            <input type="text" class="form-control" name="time" id="time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number:</label>
+                            <input type="tel" class="form-control" name="phone" id="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="idproof">Upload ID Proof:</label>
+                            <input type="file" class="form-control-file" name="idproof" id="idproof" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-custom btn-block">Book Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8d7da; /* Pink background color */
+        }
+        .container {
+            background-color: #ffffff; /* White background for form */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #e83e8c; /* Pink button color */
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #d63384; /* Darker pink on hover */
+        }
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+        .profile-img-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px; /* Adjust margin to separate from form */
+        }
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; /* Makes the image circular */
+            object-fit: cover; /* Ensures the image covers the container */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">My Profile</h1>
+        <div class="profile-img-container">
+            {% if image %}
+                <img src="{{ image.url }}" alt="Profile Image" class="profile-img mt-2">
+            {% else %}
+                <p>No image available</p>
+            {% endif %}
+        </div>
+        <form method="post" enctype="multipart/form-data" action="{% url 'update_profile' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" class="form-control" value="{{first_name}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" class="form-control" value="{{last_name}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" value="{{email}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="number" id="phone" name="phone" class="form-control" value="{{phone}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" class="form-control" value="{{address}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" value="{{password}}" readonly>
+            </div>
+         
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" class="form-control" value="{{age}}" readonly>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Update</button>
+            <button type="button" class="btn btn-secondary"><a href="/user_home/" class="text-white">Back To Home</a></button>
+        </form>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
